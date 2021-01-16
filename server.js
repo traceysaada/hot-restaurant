@@ -1,15 +1,17 @@
 // Dependencies
-var express = require(“express”);
-var path = require(“path”);
+var express = require("express");
+var path = require("path");
 
 // set up express app
 var app = express();
 var PORT = 3000;
 
 // sets up the express app to handle data parsing
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Reservation (DATA)
+
 
 
 // Routes to HTML 
@@ -35,4 +37,6 @@ var PORT = 3000;
 
 
 // Starts the server to being listening 
-
+app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+  });
