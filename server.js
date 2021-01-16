@@ -10,6 +10,10 @@ var PORT = 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Business Logic
+const reservations = [];
+const waitingList = [];
+
 // Routes to HTML
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "home.html"));
@@ -30,19 +34,29 @@ app.get("/reserve", function (req, res) {
 // displays a table list
 app.get("/api/tables", function(req, res) {
   
-    console.log(tableList);
-res.status(200).json(tableList)
+ 
+res.json(reservations)
 })
 // get current tables on the wait list
 app.get("/api/waitlist", function(req, res){
-let tables =[];
-if(tableList.length > 5) {
-    tables = tableList.slice(5);
-}
-res.status(200).json(tables);
+
+res.status(200).json(waitingList);
 })
 
 // Create a reserve post route
+app.post("/api/tables", function(req, res) {
+    
+    if(reservations.length >= 5) {
+        waitingList.push(req.body);
+        res.send(false)
+        console.log("I was put on the waitng list")
+    } else {
+        reservations.push(req.body)
+        console.log("I got onto the reservatins, the current no of reserverations is: ", reservations.length)
+        res.send(true)
+    }
+})
+
 
 // Starts the server to being listening
 app.listen(PORT, function () {
